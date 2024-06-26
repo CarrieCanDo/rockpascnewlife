@@ -1,77 +1,100 @@
-// rps.js
-let userScore = 0;
-let computerScore = 0;
-const userScore_span = document.getElementById("user-score");
-const computerScore_span = document.getElementById("computer-score");
-const result_p = document.getElementById("result-text");
-const rock_div = document.getElementById("r");
-const paper_div = document.getElementById("p");
-const scissors_div = document.getElementById("s");
+// Define the hands and the function to get a random hand
+const hands = ['rock', 'paper', 'scissors'];
 
-function getComputerChoice() {
-    const choices = ['r', 'p', 's'];
-    const randomNumber = Math.floor(Math.random() * 3);
-    return choices[randomNumber];
+let myConsole =document.getElementById("mylist");
+let mylog= document.createElement('li');
+
+function getHand() {
+    return hands[parseInt(Math.random() * 10) % 3];
 }
 
-function win(userChoice, computerChoice) {
-    userScore++;
-    userScore_span.innerHTML = userScore;
-    computerScore_span.innerHTML = computerScore;
-    result_p.innerHTML = `Your ${convertToWord(userChoice)} beats ${convertToWord(computerChoice)}. You win!`;
-}
+// Define the rules of the game
+const rules = {
+    rock: { winsAgainst: 'scissors', losesAgainst: 'paper' },
+    paper: { winsAgainst: 'rock', losesAgainst: 'scissors' },
+    scissors: { winsAgainst: 'paper', losesAgainst: 'rock' }
+};
 
-function lose(userChoice, computerChoice) {
-    computerScore++;
-    userScore_span.innerHTML = userScore;
-    computerScore_span.innerHTML = computerScore;
-    result_p.innerHTML = `Your ${convertToWord(userChoice)} loses to ${convertToWord(computerChoice)}. You lost...`;
-}
+// Define the function to play a single round
+function playRound(player1, player2) {
+    const hand1 = player1.getHand();
+    const hand2 = player2.getHand();
+     mylog= document.createElement('li');
+    mylog.innerText=player1.name + ' played ' + hand1;
+    myConsole.appendChild(mylog);
+    //console.log(player1.name + ' played ' + hand1);
+     mylog= document.createElement('li');
+    mylog.innerText=player2.name + ' played ' + hand2;
+    myConsole.appendChild(mylog);
+    //console.log(player2.name + ' played ' + hand2);
 
-function draw(userChoice, computerChoice) {
-    result_p.innerHTML = `Your ${convertToWord(userChoice)} equals ${convertToWord(computerChoice)}. It's a draw.`;
-}
-
-function game(userChoice) {
-    const computerChoice = getComputerChoice();
-    switch (userChoice + computerChoice) {
-        case "rs":
-        case "pr":
-        case "sp":
-            win(userChoice, computerChoice);
-            break;
-        case "rp":
-        case "ps":
-        case "sr":
-            lose(userChoice, computerChoice);
-            break;
-        case "rr":
-        case "pp":
-        case "ss":
-            draw(userChoice, computerChoice);
-            break;
+    if (hand1 === hand2) {
+        mylog= document.createElement('li');
+        mylog.innerText=("It's a tie!");
+        myConsole.appendChild(mylog);
+        return null;
+    } else if (rules[hand1].winsAgainst === hand2) {
+        mylog= document.createElement('li');
+        mylog.innerText=(player1.name + ' wins!');
+        myConsole.appendChild(mylog);
+        //console.log(player1.name + ' wins!');
+        return player1;
+    } else {
+        mylog= document.createElement('li');
+        mylog.innerText=(player2.name + ' wins!');
+        myConsole.appendChild(mylog);
+        //console.log(player2.name + ' wins!');
+        return player2;
     }
 }
 
-function main() {
-    rock_div.addEventListener('click', () => game("r"));
-    paper_div.addEventListener('click', () => game("p"));
-    scissors_div.addEventListener('click', () => game("s"));
+// Define the function to play a game until one player wins a certain number of rounds
+function playGame(player1, player2, playUntil) {
+    let score1 = 0;
+    let score2 = 0;
+
+    while (score1 < playUntil && score2 < playUntil) {
+        const winner = playRound(player1, player2);
+        if (winner === player1) {
+            score1++;
+        } else if (winner === player2) {
+            score2++;
+        }
+    }
+
+    return score1 > score2 ? player1 : player2;
 }
 
-main();
-
-function convertToWord(letter) {
-    if (letter === "r") return "Rock";
-    if (letter === "p") return "Paper";
-    return "Scissors";
+// Define the function to play a tournament
+function playTournament(player1, player2, player3, player4, playUntil) {
+    const semiFinal1Winner = playGame(player1, player2, playUntil);
+    const semiFinal2Winner = playGame(player3, player4, playUntil);
+    const finalWinner = playGame(semiFinal1Winner, semiFinal2Winner, playUntil);
+    mylog= document.createElement('li');
+    mylog.innerText=(finalWinner.name + " is the world champion");
+    myConsole.appendChild(mylog);
+    //console.log(finalWinner.name + " is the world champion");
 }
-function startTournament() {
-    const player1 = { name: document.getElementById('player1-name').value, getHand: getHand };
-    const player2 = { name: document.getElementById('player2-name').value, getHand: getHand };
-    const player3 = { name: document.getElementById('player3-name').value, getHand: getHand };
-    const player4 = { name: document.getElementById('player4-name').value, getHand: getHand };
 
-    // Call your playTournament function with these players
-    playTournament(player1, player2, player3, player4, 3);
-}
+// Define the player objects
+let player1 = {
+    name: 'Player1',
+    getHand: getHand
+};
+
+let player2 = {
+    name: 'Player2',
+    getHand: getHand
+};
+
+let player3 = {
+    name: 'Player3',
+    getHand: getHand
+};
+
+let player4 = {
+    name: 'Player4',
+    getHand: getHand
+};
+
+// Start the tournament

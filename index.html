@@ -10,40 +10,13 @@
     <header>
         <h1>Rock Paper Scissors</h1>
     </header>
+    <button onclick="playTournament(player1, player2, player3, player4, 3)"> play game</button>
+    <div>
+        <ul id="mylist">
 
-    <div class="score-board">
-        <div id="user-label" class="badge">user</div>
-        <div id="computer-label" class="badge">comp</div>
-        <span id="user-score">0</span>:<span id="computer-score">0</span>
+        </ul>
     </div>
 
-    <div class="result">
-        <p id="result-text">Paper covers rock. You win!</p>
-    </div>
-
-    <div class="choices">
-        <div class="choice" id="r">
-            <img src="images/rock.jpg" alt="Rock">
-        </div>
-        <div class="choice" id="p">
-            <img src="images/paper.jpg" alt="Paper">
-        </div>
-        <div class="choice" id="s">
-            <img src="images/scissors.jpg" alt="Scissors">
-        </div>
-    </div>
-
-    <p class="action-message">Make Your Move.</p>
-
-    <div class="player-names">
-        <input type="text" id="player1-name" placeholder="Player 1 Name">
-        <input type="text" id="player2-name" placeholder="Player 2 Name">
-        <input type="text" id="player3-name" placeholder="Player 3 Name">
-        <input type="text" id="player4-name" placeholder="Player 4 Name">
-        <button onclick="startTournament()">Start Tournament</button>
-    </div>
-    
-
-    <script src="rps.js"></script>
+    <script src="rps2.js"></script>
 </body>
 </html>
